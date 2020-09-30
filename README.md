@@ -51,7 +51,7 @@ if ($status->equals(ContractStatus::ACTIVE())) {
 }
 ```
 
-##Installation
+## Installation
 
 ```bash
 $ composer require cuyz/magic-constant
@@ -92,7 +92,8 @@ class Example extends MagicConstant
 You can then use the class everywhere:
 
 ```php
-function hello(Example $example) {
+// As a parameter typehint and/or a return typehint
+function hello(Example $example): Example {
     //
 }
 
@@ -104,11 +105,16 @@ hello(Example::BAR());
 
 ## Methods
 
+#### Get an instance value
+
 ```php
 echo (new Example('foo'))->getValue(); // 'foo'
 
+// You can specify the desired output format
 echo (new Example('FIZ'))->getValue(Example::FORMAT_LOWER); // 'fiz'
 ```
+
+#### Get an instance key
 
 ```php
 $constant = new Example('b');
@@ -116,11 +122,15 @@ $constant = new Example('b');
 echo $constant->getKey(); // 'BAR'
 ```
 
+#### Get instances with all possible formats
+
 ```php
 $constant = new Example('fiz');
 
 echo $constant->getAllFormats(); // [new Example('fiz'), new Example('FIZ')]
 ```
+
+#### Get all possible values for an instance
 
 ```php
 $constant = new Example('BAR');
@@ -128,18 +138,25 @@ $constant = new Example('BAR');
 echo $constant->getAllValues(); // ['bar', 'BAR', 'b']
 ```
 
+#### Returns a new instance where the value is from the first format
+
 ```php
 $constant = new Example('BAR');
 
 echo $constant->normalize(); // new Example('bar')
 ```
 
+#### Compares instances
+
 ```php
 (new Example('foo'))->equals(new Exemple('bar')); // false
+(new Example('foo'))->equals(null); // false
 
 (new Example('fiz'))->equals(new Exemple('FIZ')); // true
 (new Example('b'))->equals(new Exemple('b')); // true
 ```
+
+#### Returns true if at least one element is equal
 
 ```php
 $constant = new Example('foo');
@@ -148,9 +165,13 @@ $constant->in([new Exemple('bar'), null, 'foo']); // false
 $constant->in([new Exemple('foo'), null, 'foo']); // true
 ```
 
+#### Get all keys for a magic constant class
+
 ```php
 Example::keys(); // ['FOO', 'BAR', 'FIZ']
 ```
+
+#### Get an associative array of possible values
 
 ```php
 Example::values();
@@ -170,6 +191,8 @@ Example::values('/^F(.+)/');
 ];
 ```
 
+#### Get all keys and associated values
+
 ```php
 Example::toArray();
 
@@ -180,15 +203,21 @@ Example::toArray();
 ];
 ```
 
+#### Check if a value is valid
+
 ```php
 Example::isValidValue('foo'); // true
 Example::isValidValue('hello'); // false
 ```
 
+#### Check if a key is valid
+
 ```php
 Example::isValidKey('BAR'); // true
 Example::isValidKey('HELLO'); // false
 ```
+
+#### Returns the key of any value
 
 ```php
 Example::search('foo'); // 'FOO'
