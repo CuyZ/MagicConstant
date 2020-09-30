@@ -1,0 +1,36 @@
+{
+    "name": "cuyz/magic-constant",
+    "description": "PHP Magic Constants, even more powerful than an Enum",
+    "keywords": [
+        "enum",
+        "magic constant",
+        "magic number"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/CuyZ/MagicConstant",
+    "authors": [
+        {
+            "name": "Nathan Boiron",
+            "email": "nathan.boiron@gmail.com",
+            "homepage": "https://github.com/Mopolo",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CuyZ\\MagicConstant\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CuyZ\\MagicConstant\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}

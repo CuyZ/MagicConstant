@@ -1,0 +1,15 @@
+*.php text eol=lf
+
+# Directories/files not distributed when using Composer option `--prefer-dist`
+/.phpstorm.meta.php/ export-ignore
+/docs/ export-ignore
+/tests/ export-ignore
+
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/infection.json.dist export-ignore
+/mkdocs.yml export-ignore
+/phpcs.xml.dist export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit.xml.dist export-ignore
+/phpinsights.php export-ignore
