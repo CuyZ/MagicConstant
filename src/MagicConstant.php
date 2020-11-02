@@ -150,6 +150,11 @@ abstract class MagicConstant
         return false;
     }
 
+    public function toFormat(string $format): self
+    {
+        return new static($this->getValue($format));
+    }
+
     /**
      * @return string[]
      */

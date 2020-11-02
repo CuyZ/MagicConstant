@@ -478,4 +478,21 @@ class MagicConstantTest extends TestCase
             ],
         ];
     }
+
+    /** @test */
+    public function get_new_instance_in_specific_format()
+    {
+        /* *** Initialisation *** */
+        $base = FakeMagicConstant::TYPE_ARRAY_FORMATS();
+
+        /* *** Process *** */
+        $instanceFormatA = $base->toFormat(FakeMagicConstant::FORMAT_A);
+        $instanceFormatB = $base->toFormat(FakeMagicConstant::FORMAT_B);
+        $instanceFormatC = $base->toFormat(FakeMagicConstant::FORMAT_C);
+
+        /* *** Assertion *** */
+        self::assertSame('value A', $instanceFormatA->getValue());
+        self::assertSame('value B', $instanceFormatB->getValue());
+        self::assertSame('value C', $instanceFormatC->getValue());
+    }
 }
