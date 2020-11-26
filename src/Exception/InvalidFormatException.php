@@ -6,6 +6,9 @@ namespace CuyZ\MagicConstant\Exception;
 use CuyZ\MagicConstant\MagicConstant;
 use InvalidArgumentException;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class InvalidFormatException extends InvalidArgumentException implements MagicConstantException
 {
     public function __construct(MagicConstant $magicConstant, string $format)

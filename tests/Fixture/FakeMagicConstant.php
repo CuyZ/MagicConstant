@@ -14,6 +14,10 @@ use CuyZ\MagicConstant\MagicConstant;
  */
 final class FakeMagicConstant extends MagicConstant
 {
+    public const FORMAT_A = 'format A';
+    public const FORMAT_B = 'format B';
+    public const FORMAT_C = 'format C';
+
     protected const TYPE_STRING = 'foo';
     protected const TYPE_INTEGER = 123;
     protected const TYPE_ARRAY_SINGLE = ['bar'];
@@ -23,8 +27,4 @@ final class FakeMagicConstant extends MagicConstant
         self::FORMAT_B => 'value B',
         self::FORMAT_C => 'value C',
     ];
-
-    public const FORMAT_A = 'format A';
-    public const FORMAT_B = 'format B';
-    public const FORMAT_C = 'format C';
 }

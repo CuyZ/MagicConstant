@@ -223,7 +223,11 @@ class MagicConstantTest extends TestCase
         self::assertEquals($extectedValues, $actualValues);
     }
 
-    /** @test */
+    /**
+     * This test must be run in a separate process to avoid the memoization of values.
+     * @runInSeparateProcess
+     * @test
+     */
     public function toArray_returns_an_associative_array_of_constants_and_their_values()
     {
         /* *** Initialisation *** */
@@ -397,11 +401,8 @@ class MagicConstantTest extends TestCase
      */
     public function in_returns_true_if_at_least_one_value_is_correct(MagicConstant $magicConstant, array $values, bool $expectedResult)
     {
-        /* *** Process *** */
-        $actualResult = $magicConstant->in($values);
-
-        /* *** Assertion *** */
-        self::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $magicConstant->in($values));
+        self::assertSame($expectedResult, $magicConstant->in(array_reverse($values)));
     }
 
     public function inDataProvider(): array

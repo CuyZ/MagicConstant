@@ -75,7 +75,10 @@ abstract class MagicConstant
 
     public function getKey(): string
     {
-        return (string)static::search($this->value);
+        /** @var string $key */
+        $key = static::search($this->value);
+
+        return $key;
     }
 
     /**
@@ -92,11 +95,11 @@ abstract class MagicConstant
     public function normalize(): MagicConstant
     {
         $array = static::toArray();
-        $key = static::search($this->value);
+        $key = $this->getKey();
 
-        reset($array);
+        $values = array_values($array[$key]);
 
-        return new static(current($array[$key]));
+        return new static($values[0]);
     }
 
     /**
@@ -121,12 +124,8 @@ abstract class MagicConstant
             return false;
         }
 
-        $ownKey = static::search($this->value);
+        $ownKey = $this->getKey();
         $otherKey = static::search($other->getValue());
-
-        if (false === $ownKey || false === $otherKey) {
-            return false;
-        }
 
         return $ownKey === $otherKey;
     }
@@ -237,10 +236,14 @@ abstract class MagicConstant
 
     /**
      * @param mixed $value
-     * @return bool|string
+     * @return false|string
      */
     public static function search($value)
     {
+        /**
+         * @var string $constant
+         * @var array $values
+         */
         foreach (static::toArray() as $constant => $values) {
             if (in_array($value, $values, true)) {
                 return $constant;
