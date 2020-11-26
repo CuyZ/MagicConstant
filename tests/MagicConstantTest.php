@@ -6,6 +6,7 @@ use CuyZ\MagicConstant\Exception\InvalidFormatException;
 use CuyZ\MagicConstant\Exception\InvalidKeyException;
 use CuyZ\MagicConstant\Exception\InvalidValueException;
 use CuyZ\MagicConstant\MagicConstant;
+use CuyZ\MagicConstant\Tests\Fixture\CustomSetValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\FakeMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\OtherMagicConstant;
 
@@ -557,5 +558,14 @@ class MagicConstantTest extends TestCase
 
         /* *** Assertion *** */
         self::assertSame($expectedValues, $actualValues);
+    }
+
+    public function test_has_custom_value_setter()
+    {
+        $magicConstant1 = new CustomSetValueMagicConstant('FOO');
+        $magicConstant2 = new CustomSetValueMagicConstant('foo');
+
+        self::assertSame('foo', $magicConstant1->getValue());
+        self::assertSame('foo', $magicConstant2->getValue());
     }
 }
