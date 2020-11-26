@@ -19,7 +19,7 @@ abstract class MagicConstant
     /**
      * @param mixed $value
      */
-    public function __construct($value)
+    final public function __construct($value)
     {
         if ($value instanceof self) {
             $value = $value->getValue();
