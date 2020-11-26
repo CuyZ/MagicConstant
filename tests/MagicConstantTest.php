@@ -350,10 +350,10 @@ class MagicConstantTest extends TestCase
      * @test
      * @dataProvider equalsDataProvider
      * @param MagicConstant $magicConstantA
-     * @param MagicConstant $magicConstantB
+     * @param mixed $magicConstantB
      * @param bool $expectedResult
      */
-    public function equals_compares_values(MagicConstant $magicConstantA, MagicConstant $magicConstantB, bool $expectedResult)
+    public function equals_compares_values(MagicConstant $magicConstantA, $magicConstantB, bool $expectedResult)
     {
         /* *** Process *** */
         $actualResult = $magicConstantA->equals($magicConstantB);
@@ -381,6 +381,10 @@ class MagicConstantTest extends TestCase
             [new FakeMagicConstant('A'), new FakeMagicConstant('foo'), false],
             [new FakeMagicConstant('B'), new FakeMagicConstant('foo'), false],
             [new FakeMagicConstant('C'), new FakeMagicConstant('foo'), false],
+
+            [new FakeMagicConstant('foo'), null, false],
+            [new FakeMagicConstant('foo'), new OtherMagicConstant('other'), false],
+            [new FakeMagicConstant('foo'), new OtherMagicConstant('foo'), false],
         ];
     }
 
@@ -494,5 +498,63 @@ class MagicConstantTest extends TestCase
         self::assertSame('value A', $instanceFormatA->getValue());
         self::assertSame('value B', $instanceFormatB->getValue());
         self::assertSame('value C', $instanceFormatC->getValue());
+    }
+
+    public function test_normalize_resets_an_instance_to_the_first_format()
+    {
+        /* *** Initialisation *** */
+        $withoutFormats = new FakeMagicConstant('B');
+        $withFormats = new FakeMagicConstant('value C');
+
+        /* *** Process *** */
+        $withoutFormatsNormalized = $withoutFormats->normalize();
+        $withFormatsNormalized = $withFormats->normalize();
+
+        /* *** Assertion *** */
+        self::assertSame('A', $withoutFormatsNormalized->getValue());
+        self::assertSame('value A', $withFormatsNormalized->getValue());
+
+        self::assertNotSame($withoutFormats, $withoutFormatsNormalized);
+        self::assertNotSame($withFormats, $withFormatsNormalized);
+    }
+
+    public function allValuesDataProvider(): array
+    {
+        return [
+            [
+                'magicConstant' => FakeMagicConstant::TYPE_STRING(),
+                'values' => ['foo'],
+            ],
+            [
+                'magicConstant' => FakeMagicConstant::TYPE_INTEGER(),
+                'values' => [123],
+            ],
+            [
+                'magicConstant' => FakeMagicConstant::TYPE_ARRAY_SINGLE(),
+                'values' => ['bar'],
+            ],
+            [
+                'magicConstant' => FakeMagicConstant::TYPE_ARRAY_MULTIPLE(),
+                'values' => ['A', 'B', 'C'],
+            ],
+            [
+                'magicConstant' => FakeMagicConstant::TYPE_ARRAY_FORMATS(),
+                'values' => ['value A', 'value B', 'value C'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider allValuesDataProvider
+     * @param MagicConstant $magicConstant
+     * @param array $expectedValues
+     */
+    public function test_return_values_in_all_formats(MagicConstant $magicConstant, array $expectedValues)
+    {
+        /* *** Process *** */
+        $actualValues = $magicConstant->getAllValues();
+
+        /* *** Assertion *** */
+        self::assertSame($expectedValues, $actualValues);
     }
 }
