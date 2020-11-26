@@ -4,6 +4,7 @@ help:
 	@echo "  test                           to perform tests."
 	@echo "  coverage                       to perform tests with code coverage."
 	@echo "  phpstan                        to run phpstan"
+	@echo "  infection                      to run infection"
 
 install:
 	composer install
@@ -16,3 +17,8 @@ coverage:
 
 phpstan:
 	php vendor/bin/phpstan analyse
+
+INFECTION_THREADS = $(shell sysctl -n hw.ncpu)
+
+infection:
+	php vendor/bin/infection --threads=$(INFECTION_THREADS)
