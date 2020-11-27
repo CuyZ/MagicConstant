@@ -141,11 +141,11 @@ class MagicConstantTest extends TestCase
      * @test
      * @dataProvider fakeMagicConstantDataProvider
      * @param FakeMagicConstant $magicConstant
-     * @param string $key
+     * @param string|int $key
      * @param mixed $expectedValue
-     * @param string $format
+     * @param string|int $format
      */
-    public function getValue_returns_the_correct_value_depending_on_the_format(FakeMagicConstant $magicConstant, string $key, $expectedValue, string $format)
+    public function getValue_returns_the_correct_value_depending_on_the_format(FakeMagicConstant $magicConstant, $key, $expectedValue, $format)
     {
         /* *** Process *** */
         $actualMagicConstant = new FakeMagicConstant($magicConstant->getValue());
@@ -174,10 +174,10 @@ class MagicConstantTest extends TestCase
      * @test
      * @dataProvider fakeMagicConstantDataProvider
      * @param FakeMagicConstant $magicConstant
-     * @param string $key
+     * @param string|int $key
      * @param mixed $expectedValue
      */
-    public function toString_returns_the_correct_value(FakeMagicConstant $magicConstant, string $key, $expectedValue)
+    public function toString_returns_the_correct_value(FakeMagicConstant $magicConstant, $key, $expectedValue)
     {
         /* *** Process *** */
         $actualValue = (string)$magicConstant;
