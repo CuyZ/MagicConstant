@@ -8,6 +8,8 @@ use CuyZ\MagicConstant\Exception\InvalidKeyException;
 use CuyZ\MagicConstant\Exception\InvalidValueException;
 use ReflectionClass;
 
+use function array_keys;
+
 abstract class MagicConstant
 {
     /** @var mixed */
@@ -79,6 +81,24 @@ abstract class MagicConstant
         $key = static::search($this->value);
 
         return $key;
+    }
+
+    /**
+     * Returns the current instance format.
+     *
+     * @return int|string|null
+     */
+    public function getFormat()
+    {
+        $values = static::toArray();
+
+        foreach ($values[$this->getKey()] as $format => $value) {
+            if ($value === $this->value) {
+                return $format;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -183,10 +203,7 @@ abstract class MagicConstant
         return $out;
     }
 
-    /**
-     * @return array
-     */
-    public static function toArray(): array
+    private static function toArray(): array
     {
         if (!array_key_exists(static::class, static::$cache)) {
             $reflection = new ReflectionClass(static::class);
@@ -238,7 +255,7 @@ abstract class MagicConstant
      * @param mixed $value
      * @return false|string
      */
-    public static function search($value)
+    private static function search($value)
     {
         /**
          * @var string $constant

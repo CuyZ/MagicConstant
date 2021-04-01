@@ -13,13 +13,16 @@ class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function magicConstantDataProvider(string $magicConstantClass): array
     {
-        $constants = $magicConstantClass::toArray();
-
         $data = [];
 
-        foreach ($constants as $key => $values) {
-            foreach ($values as $format => $value) {
-                $data[] = [new $magicConstantClass($value), $key, $value, $format];
+        foreach ($magicConstantClass::values() as $value) {
+            foreach ($value->getAllFormats() as $constant) {
+                $data[] = [
+                    new $magicConstantClass($constant->getValue()),
+                    $constant->getKey(),
+                    $constant->getValue(),
+                    $constant->getFormat(),
+                ];
             }
         }
 
