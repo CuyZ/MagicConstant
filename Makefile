@@ -13,7 +13,7 @@ test:
 	php vendor/bin/phpunit
 
 coverage:
-	php vendor/bin/phpunit --coverage-text
+	php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-text
 
 phpstan:
 	php vendor/bin/phpstan analyse
