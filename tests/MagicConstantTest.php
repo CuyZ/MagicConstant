@@ -7,6 +7,7 @@ use CuyZ\MagicConstant\Exception\InvalidKeyException;
 use CuyZ\MagicConstant\Exception\InvalidValueException;
 use CuyZ\MagicConstant\MagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\CustomSetValueMagicConstant;
+use CuyZ\MagicConstant\Tests\Fixture\AnyValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\FakeMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\OtherMagicConstant;
 
@@ -161,6 +162,13 @@ class MagicConstantTest extends TestCase
 
         /* *** Assertion *** */
         self::assertSame($expectedKey, $actualMagicConstant->getKey());
+    }
+
+    public function test_getKey_returns_empty_string_for_dynamic_value(): void
+    {
+        $constant = new AnyValueMagicConstant('foo');
+
+        self::assertSame('', $constant->getKey());
     }
 
     /**

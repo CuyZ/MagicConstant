@@ -77,10 +77,7 @@ abstract class MagicConstant
 
     public function getKey(): string
     {
-        /** @var string $key */
-        $key = static::search($this->value);
-
-        return $key;
+        return (string)static::search($this->value);
     }
 
     /**
