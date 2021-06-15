@@ -6,6 +6,7 @@ namespace CuyZ\MagicConstant;
 use CuyZ\MagicConstant\Exception\InvalidFormatException;
 use CuyZ\MagicConstant\Exception\InvalidKeyException;
 use CuyZ\MagicConstant\Exception\InvalidValueException;
+use CuyZ\MagicConstant\Exception\MagicConstantException;
 use ReflectionClass;
 
 use function array_keys;
@@ -265,6 +266,19 @@ abstract class MagicConstant
         }
 
         return false;
+    }
+
+    /**
+     * @param mixed $value
+     * @return static|null
+     */
+    public static function tryFrom($value): ?self
+    {
+        try {
+            return new static($value);
+        } catch (MagicConstantException $e) {
+            return null;
+        }
     }
 
     /**

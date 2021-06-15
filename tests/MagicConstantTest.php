@@ -10,6 +10,7 @@ use CuyZ\MagicConstant\Tests\Fixture\CustomSetValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\AnyValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\FakeMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\OtherMagicConstant;
+use stdClass;
 
 class MagicConstantTest extends TestCase
 {
@@ -522,5 +523,27 @@ class MagicConstantTest extends TestCase
         self::assertEquals('format A', (new FakeMagicConstant('value A'))->getFormat());
         self::assertEquals('format B', (new FakeMagicConstant('value B'))->getFormat());
         self::assertEquals('format C', (new FakeMagicConstant('value C'))->getFormat());
+    }
+
+    public function test_tryFrom(): void
+    {
+        self::assertNull(FakeMagicConstant::tryFrom(null));
+        self::assertNull(FakeMagicConstant::tryFrom(1234));
+        self::assertNull(FakeMagicConstant::tryFrom('wrong'));
+        self::assertNull(FakeMagicConstant::tryFrom(new stdClass()));
+
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('foo'));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom(123));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('bar'));
+
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('A'));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('B'));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('C'));
+
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('value A'));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('value B'));
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom('value C'));
+
+        self::assertInstanceOf(FakeMagicConstant::class, FakeMagicConstant::tryFrom(FakeMagicConstant::TYPE_STRING()));
     }
 }
