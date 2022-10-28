@@ -32,6 +32,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5 || ^8.5.23 || ^9.0",
-        "phpstan/phpstan": "0.12.56"
+        "phpstan/phpstan": "1.4.10"
     }
 }
