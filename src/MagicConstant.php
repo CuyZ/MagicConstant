@@ -13,16 +13,12 @@ use function array_keys;
 
 abstract class MagicConstant
 {
-    /** @var mixed */
-    protected $value;
+    protected mixed $value;
 
-    /** @var array */
-    protected static $cache = [];
+    /** @var array<class-string<static>, array<mixed>> */
+    protected static array $cache = [];
 
-    /**
-     * @param mixed $value
-     */
-    final public function __construct($value)
+    final public function __construct(mixed $value)
     {
         if ($value instanceof self) {
             $value = $value->getValue();
@@ -31,17 +27,13 @@ abstract class MagicConstant
         $this->setValue($value);
     }
 
-    /**
-     * @param string|null $format
-     * @return mixed
-     */
-    public function getValue(string $format = null)
+    public function getValue(string|int $format = null): mixed
     {
         if (empty($format)) {
             return $this->value;
         }
 
-        $values = static::toArray();
+        $values = self::toArray();
 
         if (!isset($values[$this->getKey()][$format])) {
             throw new InvalidFormatException($this, $format);
@@ -55,7 +47,7 @@ abstract class MagicConstant
      */
     public function getAllFormats(): array
     {
-        $values = static::toArray();
+        $values = self::toArray();
         $instances = array_map(
             function ($value) {
                 return new static($value);
@@ -71,24 +63,22 @@ abstract class MagicConstant
      */
     public function getAllValues(): array
     {
-        $values = static::toArray();
+        $values = self::toArray();
 
         return array_values($values[$this->getKey()]);
     }
 
     public function getKey(): string
     {
-        return (string)static::search($this->value);
+        return (string)self::search($this->value);
     }
 
     /**
      * Returns the current instance format.
-     *
-     * @return int|string|null
      */
-    public function getFormat()
+    public function getFormat(): int|string|null
     {
-        $values = static::toArray();
+        $values = self::toArray();
 
         foreach ($values[$this->getKey()] as $format => $value) {
             if ($value === $this->value) {
@@ -99,20 +89,14 @@ abstract class MagicConstant
         return null;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->value;
     }
 
-    /**
-     * @return MagicConstant
-     */
     public function normalize(): MagicConstant
     {
-        $array = static::toArray();
+        $array = self::toArray();
         $key = $this->getKey();
 
         $values = array_values($array[$key]);
@@ -120,10 +104,7 @@ abstract class MagicConstant
         return new static($values[0]);
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected function setValue($value): void
+    protected function setValue(mixed $value): void
     {
         if (!static::isValidValue($value)) {
             throw new InvalidValueException(static::class, $value);
@@ -143,14 +124,13 @@ abstract class MagicConstant
         }
 
         $ownKey = $this->getKey();
-        $otherKey = static::search($other->getValue());
+        $otherKey = self::search($other->getValue());
 
         return $ownKey === $otherKey;
     }
 
     /**
      * @param mixed[] $values
-     * @return bool
      */
     public function in(array $values): bool
     {
@@ -167,11 +147,7 @@ abstract class MagicConstant
         return false;
     }
 
-    /**
-     * @param string $format
-     * @return static
-     */
-    public function toFormat(string $format): self
+    public function toFormat(string $format): static
     {
         return new static($this->getValue($format));
     }
@@ -181,18 +157,17 @@ abstract class MagicConstant
      */
     public static function keys(): array
     {
-        return array_keys(static::toArray());
+        return array_keys(self::toArray());
     }
 
     /**
-     * @param string|null $pattern
      * @return static[]
      */
     public static function values(string $pattern = null): array
     {
         $out = [];
 
-        foreach (static::toArray() as $key => $values) {
+        foreach (self::toArray() as $key => $values) {
             if (null === $pattern || preg_match($pattern, $key)) {
                 $out[$key] = new static(reset($values));
             }
@@ -229,37 +204,25 @@ abstract class MagicConstant
         return static::$cache[static::class];
     }
 
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    public static function isValidValue($value): bool
+    public static function isValidValue(mixed $value): bool
     {
-        return false !== static::search($value);
+        return false !== self::search($value);
     }
 
-    /**
-     * @param mixed $key
-     * @return bool
-     */
-    public static function isValidKey($key): bool
+    public static function isValidKey(mixed $key): bool
     {
-        $array = static::toArray();
+        $array = self::toArray();
 
         return isset($array[$key]);
     }
 
-    /**
-     * @param mixed $value
-     * @return false|string
-     */
-    private static function search($value)
+    private static function search(mixed $value): string|false
     {
         /**
          * @var string $constant
          * @var array $values
          */
-        foreach (static::toArray() as $constant => $values) {
+        foreach (self::toArray() as $constant => $values) {
             if (in_array($value, $values, true)) {
                 return $constant;
             }
@@ -268,11 +231,7 @@ abstract class MagicConstant
         return false;
     }
 
-    /**
-     * @param mixed $value
-     * @return static|null
-     */
-    public static function tryFrom($value): ?self
+    public static function tryFrom(mixed $value): ?self
     {
         try {
             return new static($value);
@@ -282,14 +241,12 @@ abstract class MagicConstant
     }
 
     /**
-     * @param string $name
      * @param array $arguments
-     * @return static
      * @throws InvalidKeyException
      */
-    public static function __callStatic(string $name, array $arguments = [])
+    public static function __callStatic(string $name, array $arguments = []): static
     {
-        $array = static::toArray();
+        $array = self::toArray();
 
         if (!isset($array[$name])) {
             throw new InvalidKeyException(static::class, $name);

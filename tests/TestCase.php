@@ -8,10 +8,10 @@ use CuyZ\MagicConstant\MagicConstant;
 class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @param string|MagicConstant $magicConstantClass
+     * @param class-string<MagicConstant> $magicConstantClass
      * @return array
      */
-    protected function magicConstantDataProvider(string $magicConstantClass): array
+    protected static function magicConstantDataProvider(string $magicConstantClass): array
     {
         $data = [];
 

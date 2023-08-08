@@ -8,7 +8,7 @@ use CuyZ\MagicConstant\MagicConstant;
 
 final class AnyValueMagicConstant extends MagicConstant
 {
-    protected function setValue($value): void
+    protected function setValue(mixed $value): void
     {
         $this->value = $value;
     }

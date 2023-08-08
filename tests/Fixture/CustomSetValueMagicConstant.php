@@ -9,7 +9,7 @@ final class CustomSetValueMagicConstant extends MagicConstant
 {
     protected const A = 'foo';
 
-    protected function setValue($value): void
+    protected function setValue(mixed $value): void
     {
         parent::setValue(strtolower($value));
     }

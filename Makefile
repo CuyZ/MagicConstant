@@ -1,24 +1,25 @@
-help:
-	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  install                        to setup the dev environment."
-	@echo "  test                           to perform tests."
-	@echo "  coverage                       to perform tests with code coverage."
-	@echo "  phpstan                        to run phpstan"
-	@echo "  infection                      to run infection"
+.DEFAULT_GOAL := help
 
-install:
+.PHONY: help
+help: ## Show help message
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m\033[0m\n"} /^[$$()% 0-9a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+.PHONY: install
+install: ## to setup the dev environment.
 	composer install
 
-test:
+.PHONY: test
+test: ## to perform unit tests.
 	php vendor/bin/phpunit
 
-coverage:
+.PHONY: coverage
+coverage: ## to perform unit tests with code coverage.
 	php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-text
 
-phpstan:
+.PHONY: phpstan
+phpstan: ## to run PHPStan
 	php vendor/bin/phpstan analyse
 
-INFECTION_THREADS = $(shell sysctl -n hw.ncpu)
-
-infection:
-	php vendor/bin/infection --threads=$(INFECTION_THREADS)
+.PHONY: infection
+infection: ## to run Infection
+	php vendor/bin/infection --threads=max

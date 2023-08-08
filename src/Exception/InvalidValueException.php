@@ -5,9 +5,6 @@ namespace CuyZ\MagicConstant\Exception;
 
 use InvalidArgumentException;
 
-/**
- * @codeCoverageIgnore
- */
 final class InvalidValueException extends InvalidArgumentException implements MagicConstantException
 {
     /**
