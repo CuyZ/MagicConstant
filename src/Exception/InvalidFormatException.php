@@ -11,7 +11,7 @@ use InvalidArgumentException;
  */
 final class InvalidFormatException extends InvalidArgumentException implements MagicConstantException
 {
-    public function __construct(MagicConstant $magicConstant, string $format)
+    public function __construct(MagicConstant $magicConstant, string|int $format)
     {
         parent::__construct(sprintf('The format `%s` does not exist in `%s`', $format, get_class($magicConstant)));
     }

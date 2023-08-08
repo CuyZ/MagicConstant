@@ -10,11 +10,13 @@ use CuyZ\MagicConstant\Tests\Fixture\CustomSetValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\AnyValueMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\FakeMagicConstant;
 use CuyZ\MagicConstant\Tests\Fixture\OtherMagicConstant;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 class MagicConstantTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function the_constructor_throws_for_an_invalid_value(): void
     {
         /* *** Assertion *** */
@@ -27,7 +29,7 @@ class MagicConstantTest extends TestCase
         new FakeMagicConstant($wrongValue);
     }
 
-    /** @test */
+    #[Test]
     public function the_constructor_throws_for_other_magic_constant_instance(): void
     {
         /* *** Assertion *** */
@@ -40,7 +42,7 @@ class MagicConstantTest extends TestCase
         new FakeMagicConstant($wrongValue);
     }
 
-    /** @test */
+    #[Test]
     public function throws_for_wrong_key(): void
     {
         /* *** Assertion *** */
@@ -48,10 +50,10 @@ class MagicConstantTest extends TestCase
 
         /* *** Process *** */
         /** @noinspection PhpUndefinedMethodInspection */
-        FakeMagicConstant::WRONG_KEY();
+        FakeMagicConstant::WRONG_KEY(); // @phpstan-ignore-line
     }
 
-    /** @test */
+    #[Test]
     public function values_are_case_sensitive(): void
     {
         /* *** Initialisation *** */
@@ -64,7 +66,7 @@ class MagicConstantTest extends TestCase
         new FakeMagicConstant($wrongValue);
     }
 
-    /** @test */
+    #[Test]
     public function getValue_throws_for_an_invalid_format(): void
     {
         /* *** Assertion *** */
@@ -77,7 +79,7 @@ class MagicConstantTest extends TestCase
         $magicConstant->getValue('wrong format');
     }
 
-    /** @test */
+    #[Test]
     public function create_all_possible_values_from_the_constructor(): void
     {
         /* *** Process *** */
@@ -92,7 +94,7 @@ class MagicConstantTest extends TestCase
         self::assertSame('value C', (new FakeMagicConstant('value C'))->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function create_all_possible_values_from_the_static_method(): void
     {
         /* *** Process *** */
@@ -103,7 +105,7 @@ class MagicConstantTest extends TestCase
         self::assertSame('value A', FakeMagicConstant::TYPE_ARRAY_FORMATS()->getValue());
     }
 
-    /** @test */
+    #[Test]
     public function create_instance_from_another_instance(): void
     {
         /* *** Initialisation *** */
@@ -118,11 +120,8 @@ class MagicConstantTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider fakeMagicConstantDataProvider
-     * @param FakeMagicConstant $magicConstant
-     */
+    #[Test]
+    #[DataProvider('fakeMagicConstantDataProvider')]
     public function getValue_returns_the_correct_value(FakeMagicConstant $magicConstant): void
     {
         /* *** Process *** */
@@ -132,16 +131,14 @@ class MagicConstantTest extends TestCase
         self::assertSame($magicConstant->getValue(), $actualMagicConstant->getValue());
     }
 
-    /**
-     * @test
-     * @dataProvider fakeMagicConstantDataProvider
-     * @param FakeMagicConstant $magicConstant
-     * @param string|int $key
-     * @param mixed $expectedValue
-     * @param string|int $format
-     */
-    public function getValue_returns_the_correct_value_depending_on_the_format(FakeMagicConstant $magicConstant, $key, $expectedValue, $format): void
-    {
+    #[Test]
+    #[DataProvider('fakeMagicConstantDataProvider')]
+    public function getValue_returns_the_correct_value_depending_on_the_format(
+        FakeMagicConstant $magicConstant,
+        int|string $key,
+        mixed $expectedValue,
+        int|string $format
+    ): void {
         /* *** Process *** */
         $actualMagicConstant = new FakeMagicConstant($magicConstant->getValue());
         $actualValue = $actualMagicConstant->getValue($format);
@@ -150,12 +147,8 @@ class MagicConstantTest extends TestCase
         self::assertSame($expectedValue, $actualValue);
     }
 
-    /**
-     * @test
-     * @dataProvider fakeMagicConstantDataProvider
-     * @param FakeMagicConstant $magicConstant
-     * @param string $expectedKey
-     */
+    #[Test]
+    #[DataProvider('fakeMagicConstantDataProvider')]
     public function getKey_returns_the_correct_value(FakeMagicConstant $magicConstant, string $expectedKey): void
     {
         /* *** Process *** */
@@ -165,22 +158,21 @@ class MagicConstantTest extends TestCase
         self::assertSame($expectedKey, $actualMagicConstant->getKey());
     }
 
-    public function test_getKey_returns_empty_string_for_dynamic_value(): void
+    #[Test]
+    public function getKey_returns_empty_string_for_dynamic_value(): void
     {
         $constant = new AnyValueMagicConstant('foo');
 
         self::assertSame('', $constant->getKey());
     }
 
-    /**
-     * @test
-     * @dataProvider fakeMagicConstantDataProvider
-     * @param FakeMagicConstant $magicConstant
-     * @param string|int $key
-     * @param mixed $expectedValue
-     */
-    public function toString_returns_the_correct_value(FakeMagicConstant $magicConstant, $key, $expectedValue): void
-    {
+    #[Test]
+    #[DataProvider('fakeMagicConstantDataProvider')]
+    public function toString_returns_the_correct_value(
+        FakeMagicConstant $magicConstant,
+        int|string $key,
+        mixed $expectedValue
+    ): void {
         /* *** Process *** */
         $actualValue = (string)$magicConstant;
 
@@ -188,7 +180,7 @@ class MagicConstantTest extends TestCase
         self::assertSame((string)$expectedValue, $actualValue);
     }
 
-    /** @test */
+    #[Test]
     public function keys_returns_the_list_of_possible_keys(): void
     {
         /* *** Initialisation *** */
@@ -207,7 +199,7 @@ class MagicConstantTest extends TestCase
         self::assertSame($expectedConstants, $actualConstants);
     }
 
-    /** @test */
+    #[Test]
     public function values_returns_an_array_of_possible_values(): void
     {
         /* *** Initialisation *** */
@@ -226,13 +218,10 @@ class MagicConstantTest extends TestCase
         self::assertEquals($extectedValues, $actualValues);
     }
 
-    /**
-     * @test
-     * @dataProvider isValidValueDataProvider
-     * @param mixed $value
-     * @param $isValid
-     */
-    public function isValidValue_checks_if_a_value_is_valid($value, bool $isValid): void
+    #[Test]
+    #[DataProvider('isValidValueDataProvider')]
+
+    public function isValidValue_checks_if_a_value_is_valid(mixed $value, bool $isValid): void
     {
         /* *** Process *** */
         $actualIsValid = FakeMagicConstant::isValidValue($value);
@@ -241,10 +230,7 @@ class MagicConstantTest extends TestCase
         self::assertSame($isValid, $actualIsValid);
     }
 
-    /**
-     * @return array
-     */
-    public function isValidValueDataProvider(): array
+    public static function isValidValueDataProvider(): array
     {
         return [
             // Valid values
@@ -260,13 +246,9 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isValidKeyDataProvider
-     * @param mixed $key
-     * @param $isValid
-     */
-    public function isValidKey_checks_if_a_key_is_valid($key, bool $isValid): void
+    #[Test]
+    #[DataProvider('isValidKeyDataProvider')]
+    public function isValidKey_checks_if_a_key_is_valid(mixed $key, bool $isValid): void
     {
         /* *** Process *** */
         $actualIsValid = FakeMagicConstant::isValidKey($key);
@@ -275,10 +257,7 @@ class MagicConstantTest extends TestCase
         self::assertSame($isValid, $actualIsValid);
     }
 
-    /**
-     * @return array
-     */
-    public function isValidKeyDataProvider(): array
+    public static function isValidKeyDataProvider(): array
     {
         return [
             // Valid keys
@@ -292,14 +271,9 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider equalsDataProvider
-     * @param MagicConstant $magicConstantA
-     * @param mixed $magicConstantB
-     * @param bool $expectedResult
-     */
-    public function equals_compares_values(MagicConstant $magicConstantA, $magicConstantB, bool $expectedResult): void
+    #[Test]
+    #[DataProvider('equalsDataProvider')]
+    public function equals_compares_values(MagicConstant $magicConstantA, mixed $magicConstantB, bool $expectedResult): void
     {
         /* *** Process *** */
         $actualResult = $magicConstantA->equals($magicConstantB);
@@ -308,7 +282,7 @@ class MagicConstantTest extends TestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    public function equalsDataProvider(): array
+    public static function equalsDataProvider(): array
     {
         return [
             [new FakeMagicConstant('foo'), new FakeMagicConstant('foo'), true],
@@ -334,20 +308,15 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider inDataProvider
-     * @param MagicConstant $magicConstant
-     * @param array $values
-     * @param bool $expectedResult
-     */
+    #[Test]
+    #[DataProvider('inDataProvider')]
     public function in_returns_true_if_at_least_one_value_is_correct(MagicConstant $magicConstant, array $values, bool $expectedResult): void
     {
         self::assertSame($expectedResult, $magicConstant->in($values));
         self::assertSame($expectedResult, $magicConstant->in(array_reverse($values)));
     }
 
-    public function inDataProvider(): array
+    public static function inDataProvider(): array
     {
         return [
             [new FakeMagicConstant('foo'), [new FakeMagicConstant('foo')], true],
@@ -377,17 +346,13 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    public function fakeMagicConstantDataProvider(): array
+    public static function fakeMagicConstantDataProvider(): array
     {
-        return $this->magicConstantDataProvider(FakeMagicConstant::class);
+        return self::magicConstantDataProvider(FakeMagicConstant::class);
     }
 
-    /**
-     * @test
-     * @dataProvider allFormatsDataProvider
-     * @param MagicConstant $magicConstant
-     * @param array $expectedValues
-     */
+    #[Test]
+    #[DataProvider('allFormatsDataProvider')]
     public function getAllFormats_returns_instances_in_all_possible_formats(MagicConstant $magicConstant, array $expectedValues): void
     {
         /* *** Process *** */
@@ -397,10 +362,7 @@ class MagicConstantTest extends TestCase
         self::assertEquals($expectedValues, $actualValues);
     }
 
-    /**
-     * @return array
-     */
-    public function allFormatsDataProvider(): array
+    public static function allFormatsDataProvider(): array
     {
         return [
             [
@@ -426,7 +388,7 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    /** @test */
+    #[Test]
     public function get_new_instance_in_specific_format(): void
     {
         /* *** Initialisation *** */
@@ -443,7 +405,8 @@ class MagicConstantTest extends TestCase
         self::assertSame('value C', $instanceFormatC->getValue());
     }
 
-    public function test_normalize_resets_an_instance_to_the_first_format(): void
+    #[Test]
+    public function normalize_resets_an_instance_to_the_first_format(): void
     {
         /* *** Initialisation *** */
         $withoutFormats = new FakeMagicConstant('B');
@@ -461,7 +424,7 @@ class MagicConstantTest extends TestCase
         self::assertNotSame($withFormats, $withFormatsNormalized);
     }
 
-    public function allValuesDataProvider(): array
+    public static function allValuesDataProvider(): array
     {
         return [
             [
@@ -487,12 +450,9 @@ class MagicConstantTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider allValuesDataProvider
-     * @param MagicConstant $magicConstant
-     * @param array $expectedValues
-     */
-    public function test_return_values_in_all_formats(MagicConstant $magicConstant, array $expectedValues): void
+    #[Test]
+    #[DataProvider('allValuesDataProvider')]
+    public function return_values_in_all_formats(MagicConstant $magicConstant, array $expectedValues): void
     {
         /* *** Process *** */
         $actualValues = $magicConstant->getAllValues();
@@ -501,7 +461,8 @@ class MagicConstantTest extends TestCase
         self::assertSame($expectedValues, $actualValues);
     }
 
-    public function test_has_custom_value_setter(): void
+    #[Test]
+    public function has_custom_value_setter(): void
     {
         $magicConstant1 = new CustomSetValueMagicConstant('FOO');
         $magicConstant2 = new CustomSetValueMagicConstant('foo');
@@ -510,7 +471,8 @@ class MagicConstantTest extends TestCase
         self::assertSame('foo', $magicConstant2->getValue());
     }
 
-    public function test_getFormat_returns_the_instance_format(): void
+    #[Test]
+    public function getFormat_returns_the_instance_format(): void
     {
         self::assertEquals(0, (new FakeMagicConstant('foo'))->getFormat());
         self::assertEquals(0, (new FakeMagicConstant(123))->getFormat());
@@ -525,7 +487,8 @@ class MagicConstantTest extends TestCase
         self::assertEquals('format C', (new FakeMagicConstant('value C'))->getFormat());
     }
 
-    public function test_tryFrom(): void
+    #[Test]
+    public function tryFrom(): void
     {
         self::assertNull(FakeMagicConstant::tryFrom(null));
         self::assertNull(FakeMagicConstant::tryFrom(1234));
