@@ -1,6 +1,8 @@
 parameters:
     level: 8
-    checkMissingIterableValueType: false
     paths:
         - src
         - tests
+    ignoreErrors:
+    		-
+    			identifier: missingType.iterableValue
