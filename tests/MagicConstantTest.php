@@ -367,23 +367,23 @@ class MagicConstantTest extends TestCase
         return [
             [
                 'magicConstant' => FakeMagicConstant::TYPE_STRING(),
-                'values' => [FakeMagicConstant::TYPE_STRING()],
+                'expectedValues' => [FakeMagicConstant::TYPE_STRING()],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_INTEGER(),
-                'values' => [FakeMagicConstant::TYPE_INTEGER()],
+                'expectedValues' => [FakeMagicConstant::TYPE_INTEGER()],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_SINGLE(),
-                'values' => [FakeMagicConstant::TYPE_ARRAY_SINGLE()],
+                'expectedValues' => [FakeMagicConstant::TYPE_ARRAY_SINGLE()],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_MULTIPLE(),
-                'values' => [new FakeMagicConstant('A'), new FakeMagicConstant('B'), new FakeMagicConstant('C')],
+                'expectedValues' => [new FakeMagicConstant('A'), new FakeMagicConstant('B'), new FakeMagicConstant('C')],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_FORMATS(),
-                'values' => [new FakeMagicConstant('value A'), new FakeMagicConstant('value B'), new FakeMagicConstant('value C')],
+                'expectedValues' => [new FakeMagicConstant('value A'), new FakeMagicConstant('value B'), new FakeMagicConstant('value C')],
             ],
         ];
     }
@@ -429,23 +429,23 @@ class MagicConstantTest extends TestCase
         return [
             [
                 'magicConstant' => FakeMagicConstant::TYPE_STRING(),
-                'values' => ['foo'],
+                'expectedValues' => ['foo'],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_INTEGER(),
-                'values' => [123],
+                'expectedValues' => [123],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_SINGLE(),
-                'values' => ['bar'],
+                'expectedValues' => ['bar'],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_MULTIPLE(),
-                'values' => ['A', 'B', 'C'],
+                'expectedValues' => ['A', 'B', 'C'],
             ],
             [
                 'magicConstant' => FakeMagicConstant::TYPE_ARRAY_FORMATS(),
-                'values' => ['value A', 'value B', 'value C'],
+                'expectedValues' => ['value A', 'value B', 'value C'],
             ],
         ];
     }
