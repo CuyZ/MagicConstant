@@ -27,7 +27,7 @@ abstract class MagicConstant
         $this->setValue($value);
     }
 
-    public function getValue(string|int $format = null): mixed
+    public function getValue(string|int|null $format = null): mixed
     {
         if (empty($format)) {
             return $this->value;
@@ -163,7 +163,7 @@ abstract class MagicConstant
     /**
      * @return static[]
      */
-    public static function values(string $pattern = null): array
+    public static function values(?string $pattern = null): array
     {
         $out = [];
 
