@@ -19,7 +19,3 @@ coverage: ## to perform unit tests with code coverage.
 .PHONY: phpstan
 phpstan: ## to run PHPStan
 	php vendor/bin/phpstan analyse
-
-.PHONY: infection
-infection: ## to run Infection
-	php vendor/bin/infection --threads=max
